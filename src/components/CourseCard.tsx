@@ -1,7 +1,10 @@
 
 import { useState } from 'react';
 import { motion } from '../utils/motion';
-import { BookOpen, Clock } from 'lucide-react';
+import { BookOpen, Clock, ShoppingCart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../contexts/CartContext';
+import { toast } from '@/hooks/use-toast';
 
 type CourseLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
@@ -13,7 +16,7 @@ type CourseCardProps = {
   price: number;
   duration: string;
   tag?: string;
-  onSelect: (id: string) => void;
+  onSelect?: (id: string) => void;
 };
 
 const CourseCard = ({
@@ -27,11 +30,41 @@ const CourseCard = ({
   onSelect
 }: CourseCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+  const { addToCart, isInCart, openCart } = useCart();
   
   const levelColors = {
     Beginner: 'bg-emerald-100 text-emerald-800',
     Intermediate: 'bg-blue-100 text-blue-800',
     Advanced: 'bg-purple-100 text-purple-800',
+  };
+  
+  const handleEnroll = () => {
+    if (onSelect) {
+      onSelect(id);
+    } else {
+      navigate('/onboarding');
+    }
+  };
+  
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (isInCart(id)) {
+      openCart();
+      return;
+    }
+    
+    addToCart({
+      id,
+      title,
+      price
+    });
+    
+    toast({
+      title: "Added to cart",
+      description: `${title} has been added to your cart.`,
+    });
   };
 
   return (
@@ -67,13 +100,23 @@ const CourseCard = ({
             <span className="text-xs font-normal text-gray-500 ml-1">incl. GST</span>
           </div>
           
-          <motion.button
-            className="phonics-button bg-phonics-blue text-white"
-            animate={{ scale: isHovered ? 1.05 : 1 }}
-            onClick={() => onSelect(id)}
-          >
-            Enroll Now
-          </motion.button>
+          <div className="flex gap-2">
+            <motion.button
+              className="p-2 rounded-full bg-phonics-yellow/20 text-phonics-blue"
+              animate={{ scale: isHovered ? 1.05 : 1 }}
+              onClick={handleAddToCart}
+              title={isInCart(id) ? "View cart" : "Add to cart"}
+            >
+              <ShoppingCart className="w-5 h-5" />
+            </motion.button>
+            <motion.button
+              className="phonics-button bg-phonics-blue text-white"
+              animate={{ scale: isHovered ? 1.05 : 1 }}
+              onClick={handleEnroll}
+            >
+              Enroll Now
+            </motion.button>
+          </div>
         </div>
       </div>
     </motion.div>

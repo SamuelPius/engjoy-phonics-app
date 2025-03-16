@@ -1,222 +1,162 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { BookOpen, Filter, Search } from 'lucide-react';
 import Header from '../components/Header';
 import CourseCard from '../components/CourseCard';
-import AnimatedCharacter from '../components/AnimatedCharacter';
+
+// Course Data
+const coursesData = [
+  {
+    id: 'phonics-basics',
+    title: 'Phonics Basics',
+    description: 'Learn the foundation of phonics, focusing on letter sounds, blends, and basic reading skills.',
+    level: 'Beginner' as const,
+    price: 2999,
+    duration: '8 weeks',
+    tag: 'Most Popular'
+  },
+  {
+    id: 'intermediate-grammar',
+    title: 'Intermediate Grammar',
+    description: 'Master the rules of grammar including parts of speech, sentence structure, and punctuation.',
+    level: 'Intermediate' as const,
+    price: 3999,
+    duration: '10 weeks'
+  },
+  {
+    id: 'advanced-reading',
+    title: 'Advanced Reading',
+    description: 'Develop advanced reading comprehension skills with challenging texts and critical analysis.',
+    level: 'Advanced' as const,
+    price: 4999,
+    duration: '12 weeks'
+  },
+  {
+    id: 'vocabulary-builder',
+    title: 'Vocabulary Builder',
+    description: 'Expand your word knowledge with systematic vocabulary building techniques and exercises.',
+    level: 'Intermediate' as const,
+    price: 3499,
+    duration: '8 weeks'
+  },
+  {
+    id: 'writing-mastery',
+    title: 'Writing Mastery',
+    description: 'Learn to write clearly and effectively through structured practice and personalized feedback.',
+    level: 'Advanced' as const,
+    price: 5499,
+    duration: '12 weeks'
+  },
+  {
+    id: 'phonics-for-beginners',
+    title: 'Phonics for Beginners',
+    description: 'A gentle introduction to phonics for young learners starting their reading journey.',
+    level: 'Beginner' as const,
+    price: 1999,
+    duration: '6 weeks',
+    tag: 'New'
+  }
+];
 
 const CourseSelection = () => {
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filter, setFilter] = useState<string | null>(null);
-  
-  // Mock course data
-  const courses = [
-    {
-      id: '1',
-      title: 'Phonics Fundamentals',
-      description: 'Learn letter sounds and basic blending through fun activities.',
-      level: 'Beginner',
-      price: 3999,
-      duration: '8 weeks',
-      tag: 'Most Popular'
-    },
-    {
-      id: '2',
-      title: 'Reading Adventures',
-      description: 'Build confidence with simple sentences and word recognition.',
-      level: 'Beginner',
-      price: 4299,
-      duration: '10 weeks'
-    },
-    {
-      id: '3',
-      title: 'Grammar Basics',
-      description: 'Introduction to simple grammar rules through stories and games.',
-      level: 'Beginner',
-      price: 3799,
-      duration: '8 weeks'
-    },
-    {
-      id: '4',
-      title: 'Phonics Level 2',
-      description: 'Advanced phonics patterns and more complex blending skills.',
-      level: 'Intermediate',
-      price: 4599,
-      duration: '10 weeks'
-    },
-    {
-      id: '5',
-      title: 'Creative Writing',
-      description: 'Learn to create simple stories using phonics and grammar skills.',
-      level: 'Intermediate',
-      price: 4899,
-      duration: '12 weeks'
-    },
-    {
-      id: '6',
-      title: 'Grammar Mastery',
-      description: 'Deeper exploration of grammar concepts for confident writers.',
-      level: 'Advanced',
-      price: 5299,
-      duration: '12 weeks'
-    }
-  ];
-  
-  // Filter courses based on search term and level filter
-  const filteredCourses = courses.filter(course => {
-    return (
-      (course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      course.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (filter ? course.level === filter : true)
-    );
-  });
-  
-  // Handle course selection
+  const [filter, setFilter] = useState('all');
+
   const handleCourseSelect = (courseId: string) => {
-    navigate(`/onboarding?courseId=${courseId}`);
+    // In a real app, you might want to store the selected course ID
+    navigate('/onboarding');
   };
   
+  // Filter courses based on selected level
+  const filteredCourses = filter === 'all' 
+    ? coursesData 
+    : coursesData.filter(course => course.level.toLowerCase() === filter);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-20">
       <Header />
       
-      {/* Hero Section */}
-      <section className="pt-24 pb-8 px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-10"
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold font-comic text-phonics-blue mb-4">
+            Explore Our Courses
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Discover the perfect course to enhance your phonics and grammar skills. Choose from our range of expertly designed programs.
+          </p>
+        </div>
+        
+        {/* Filters */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <button 
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              filter === 'all' ? 'bg-phonics-blue text-white' : 'bg-gray-100 hover:bg-gray-200'
+            }`}
+            onClick={() => setFilter('all')}
           >
-            <h1 className="text-3xl md:text-4xl font-bold font-comic mb-4 text-phonics-blue">
-              Choose Your Learning Adventure
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Explore our phonics and grammar courses designed specially for young learners.
-            </p>
-          </motion.div>
-          
-          {/* Search and Filter */}
-          <div className="bg-white rounded-2xl shadow-md p-4 mb-8">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-grow">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Search className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search courses..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="phonics-input pl-10 w-full border-phonics-blue/20 focus:border-phonics-blue focus:ring-phonics-blue/30"
-                />
-              </div>
-              
-              <div className="flex gap-3">
-                <div className="inline-flex items-center">
-                  <Filter className="h-5 w-5 text-gray-400 mr-2" />
-                  <span className="text-sm font-medium text-gray-600">Level:</span>
-                </div>
-                
-                {['Beginner', 'Intermediate', 'Advanced'].map(level => (
-                  <button
-                    key={level}
-                    onClick={() => setFilter(filter === level ? null : level)}
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      filter === level 
-                        ? 'bg-phonics-blue text-white' 
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    {level}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
+            All Levels
+          </button>
+          <button 
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              filter === 'beginner' ? 'bg-phonics-blue text-white' : 'bg-gray-100 hover:bg-gray-200'
+            }`}
+            onClick={() => setFilter('beginner')}
+          >
+            Beginner
+          </button>
+          <button 
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              filter === 'intermediate' ? 'bg-phonics-blue text-white' : 'bg-gray-100 hover:bg-gray-200'
+            }`}
+            onClick={() => setFilter('intermediate')}
+          >
+            Intermediate
+          </button>
+          <button 
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              filter === 'advanced' ? 'bg-phonics-blue text-white' : 'bg-gray-100 hover:bg-gray-200'
+            }`}
+            onClick={() => setFilter('advanced')}
+          >
+            Advanced
+          </button>
         </div>
-      </section>
+        
+        {/* Course Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredCourses.map(course => (
+            <CourseCard
+              key={course.id}
+              id={course.id}
+              title={course.title}
+              description={course.description}
+              level={course.level}
+              price={course.price}
+              duration={course.duration}
+              tag={course.tag}
+              onSelect={handleCourseSelect}
+            />
+          ))}
+        </div>
+      </div>
       
-      {/* Courses Section */}
-      <section className="pb-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          {filteredCourses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredCourses.map((course, index) => (
-                <CourseCard
-                  key={course.id}
-                  id={course.id}
-                  title={course.title}
-                  description={course.description}
-                  level={course.level as any}
-                  price={course.price}
-                  duration={course.duration}
-                  tag={course.tag}
-                  onSelect={handleCourseSelect}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <AnimatedCharacter type="thinking" className="mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-phonics-blue mb-2">
-                No courses found
-              </h3>
-              <p className="text-gray-600">
-                Try adjusting your search or filter criteria.
-              </p>
-              <button
-                onClick={() => {
-                  setSearchTerm('');
-                  setFilter(null);
-                }}
-                className="mt-4 phonics-button bg-phonics-blue text-white"
-              >
-                Show All Courses
-              </button>
-            </div>
-          )}
+      {/* CTA Section */}
+      <div className="bg-phonics-blue/10 py-16 mt-16">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold font-comic text-phonics-blue mb-4">
+            Need Help Choosing the Right Course?
+          </h2>
+          <p className="text-lg text-gray-600 mb-8">
+            Our education consultants are here to help you find the perfect learning path based on your needs and goals.
+          </p>
+          <button 
+            className="phonics-button bg-phonics-blue text-white text-lg px-8"
+            onClick={() => navigate('/contact')}
+          >
+            Contact Us
+          </button>
         </div>
-      </section>
-      
-      {/* Info Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-phonics-yellow/10 to-phonics-green/10 rounded-3xl mx-4 md:mx-12 mb-16">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="md:w-1/3 text-center">
-              <div className="inline-block">
-                <AnimatedCharacter type="default" size="lg" />
-              </div>
-            </div>
-            
-            <div className="md:w-2/3">
-              <h2 className="text-2xl font-bold font-comic mb-4 text-phonics-blue">
-                Not Sure Which Course to Choose?
-              </h2>
-              <p className="text-gray-700 mb-6">
-                Our courses are designed to follow a natural learning progression. If your child is 
-                new to phonics or grammar, we recommend starting with our Beginner courses. 
-                You can always progress to more advanced levels as they build confidence and skills.
-              </p>
-              <div className="bg-white rounded-xl p-4 border border-phonics-blue/20">
-                <div className="flex items-start gap-3">
-                  <BookOpen className="h-5 w-5 text-phonics-blue mt-0.5" />
-                  <div>
-                    <h3 className="font-bold text-phonics-blue">Free Assessment Available</h3>
-                    <p className="text-sm text-gray-600">
-                      Not sure which level is right? Contact us for a free assessment session to determine 
-                      the perfect starting point for your child.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

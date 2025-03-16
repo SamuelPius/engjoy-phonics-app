@@ -1,11 +1,19 @@
 
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Book, GraduationCap, Menu, X, Mail } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Book, GraduationCap, Menu, X, Mail, ShoppingCart, UserCircle } from 'lucide-react';
+import { useCart } from '../contexts/CartContext';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import ShoppingCartComponent from './cart/ShoppingCart';
+import AuthModal from './auth/AuthModal';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { cartCount, isCartOpen, openCart, closeCart } = useCart();
   
   // Only show header on specific pages
   if (['/onboarding', '/payment'].includes(location.pathname)) {
@@ -61,14 +69,50 @@ const Header = () => {
             Contact
           </Link>
           <Link 
-            to="/onboarding" 
-            className="phonics-button bg-phonics-blue text-white"
+            to="/admin" 
+            className="font-medium p-2 rounded-xl hover:bg-phonics-blue/10 transition-all flex items-center gap-1"
             onClick={() => setMenuOpen(false)}
           >
-            Get Started
+            <UserCircle className="w-4 h-4" />
+            Admin
           </Link>
+          
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              className="relative"
+              onClick={() => openCart()}
+            >
+              <ShoppingCart className="h-4 w-4" />
+              {cartCount > 0 && (
+                <Badge className="absolute -top-2 -right-2 h-5 w-5 p-0 flex items-center justify-center bg-phonics-blue text-white">
+                  {cartCount}
+                </Badge>
+              )}
+            </Button>
+            
+            <Button 
+              className="phonics-button bg-phonics-blue text-white"
+              onClick={() => setIsAuthModalOpen(true)}
+            >
+              Sign In
+            </Button>
+          </div>
         </nav>
       </div>
+      
+      {/* Shopping Cart Component */}
+      <ShoppingCartComponent 
+        isOpen={isCartOpen} 
+        onOpenChange={(open) => open ? openCart() : closeCart()} 
+      />
+      
+      {/* Auth Modal */}
+      <AuthModal 
+        open={isAuthModalOpen} 
+        onOpenChange={setIsAuthModalOpen} 
+      />
     </header>
   );
 };
