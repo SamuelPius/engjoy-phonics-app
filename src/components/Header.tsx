@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Book, GraduationCap, Menu, X } from 'lucide-react';
+import { Book, GraduationCap, Menu, X, Mail } from 'lucide-react';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,6 +51,14 @@ const Header = () => {
           >
             <GraduationCap className="w-4 h-4" />
             Courses
+          </Link>
+          <Link 
+            to="/contact" 
+            className="font-medium p-2 rounded-xl hover:bg-phonics-blue/10 transition-all flex items-center gap-1"
+            onClick={() => setMenuOpen(false)}
+          >
+            <Mail className="w-4 h-4" />
+            Contact
           </Link>
           <Link 
             to="/onboarding" 

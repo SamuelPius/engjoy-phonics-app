@@ -1,13 +1,15 @@
 
-import { motion } from 'framer-motion';
-import { Badge } from "@/components/ui/badge";
-import { Book, Star } from "lucide-react";
+import { useState } from 'react';
+import { motion } from '../utils/motion';
+import { BookOpen, Clock } from 'lucide-react';
+
+type CourseLevel = 'Beginner' | 'Intermediate' | 'Advanced';
 
 type CourseCardProps = {
   id: string;
   title: string;
   description: string;
-  level: 'Beginner' | 'Intermediate' | 'Advanced';
+  level: CourseLevel;
   price: number;
   duration: string;
   tag?: string;
@@ -24,68 +26,55 @@ const CourseCard = ({
   tag,
   onSelect
 }: CourseCardProps) => {
-  // Map level to color
-  const levelColors = {
-    Beginner: 'bg-phonics-green/10 text-phonics-green border-phonics-green/30',
-    Intermediate: 'bg-phonics-yellow/10 text-phonics-yellow border-phonics-yellow/30',
-    Advanced: 'bg-phonics-red/10 text-phonics-red border-phonics-red/30'
-  };
+  const [isHovered, setIsHovered] = useState(false);
   
-  // Map level to background color
-  const cardColors = {
-    Beginner: 'from-phonics-green/5 to-transparent border-phonics-green/20',
-    Intermediate: 'from-phonics-yellow/5 to-transparent border-phonics-yellow/20',
-    Advanced: 'from-phonics-red/5 to-transparent border-phonics-red/20'
+  const levelColors = {
+    Beginner: 'bg-emerald-100 text-emerald-800',
+    Intermediate: 'bg-blue-100 text-blue-800',
+    Advanced: 'bg-purple-100 text-purple-800',
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5, boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}
-      className={`phonics-card bg-gradient-to-br ${cardColors[level]}`}
+      className="bg-white rounded-2xl shadow-md overflow-hidden relative"
+      whileHover={{ y: -5, boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)' }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
     >
-      <div className="flex justify-between items-start">
-        <Badge variant="outline" className={`font-medium ${levelColors[level]}`}>
-          {level}
-        </Badge>
-        {tag && (
-          <Badge className="bg-phonics-purple text-white">
-            {tag}
-          </Badge>
-        )}
-      </div>
+      {tag && (
+        <div className="absolute top-4 right-4 bg-phonics-yellow/90 text-phonics-blue font-bold text-xs px-3 py-1 rounded-full z-10">
+          {tag}
+        </div>
+      )}
       
-      <div className="mt-4 mb-6 flex items-center">
-        <Book className="mr-2 h-5 w-5 text-phonics-blue" />
-        <h3 className="text-xl font-bold font-comic">{title}</h3>
-      </div>
-      
-      <p className="text-gray-600 mb-6 text-sm">{description}</p>
-      
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center">
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-phonics-yellow text-phonics-yellow" />
-            ))}
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-4">
+          <span className={`${levelColors[level]} text-xs font-medium px-2.5 py-0.5 rounded-full`}>
+            {level}
+          </span>
+          <span className="flex items-center text-gray-500 text-sm">
+            <Clock className="inline-block w-4 h-4 mr-1" />
+            {duration}
+          </span>
+        </div>
+        
+        <h3 className="text-xl font-bold font-comic text-phonics-blue mb-2">{title}</h3>
+        <p className="text-gray-600 text-sm mb-4">{description}</p>
+        
+        <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-100">
+          <div className="font-bold text-lg">
+            ₹{price}
+            <span className="text-xs font-normal text-gray-500 ml-1">incl. GST</span>
           </div>
+          
+          <motion.button
+            className="phonics-button bg-phonics-blue text-white"
+            animate={{ scale: isHovered ? 1.05 : 1 }}
+            onClick={() => onSelect(id)}
+          >
+            Enroll Now
+          </motion.button>
         </div>
-        <div className="text-sm text-gray-500">
-          {duration}
-        </div>
-      </div>
-      
-      <div className="flex items-center justify-between mt-auto">
-        <div className="text-lg font-bold">
-          ₹{price}
-        </div>
-        <button
-          onClick={() => onSelect(id)}
-          className="phonics-button bg-phonics-blue text-white text-sm"
-        >
-          Enroll Now
-        </button>
       </div>
     </motion.div>
   );

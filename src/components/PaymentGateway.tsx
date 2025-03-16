@@ -68,7 +68,7 @@ const PaymentGateway = ({
         key: 'rzp_test_YourTestKeyHere', // Replace with your Razorpay key
         amount: amount * 100, // Razorpay takes amount in smallest currency unit
         currency,
-        name: 'Phonics Playground',
+        name: 'ENGJOY PHONICS & GRAMMAR',
         description,
         order_id: orderId,
         prefill: {

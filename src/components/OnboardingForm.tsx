@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion } from '../utils/motion';
 import { 
   User, Calendar, Phone, Mail, Home, School, GraduationCap, 
   ChevronRight, ChevronLeft, Check 
