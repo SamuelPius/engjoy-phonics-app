@@ -1,5 +1,5 @@
-
 import { useNavigate } from 'react-router-dom';
+// Fix import with explicit path
 import { motion } from 'framer-motion';
 import { BookOpen, Star, GraduationCap, BarChart, Clock, Check, ChevronRight } from 'lucide-react';
 import Header from '../components/Header';
