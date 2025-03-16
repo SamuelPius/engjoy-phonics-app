@@ -26,7 +26,7 @@ const Hero = ({ onGetStarted }: HeroProps) => {
               Make Reading <span className="text-phonics-yellow">Fun</span> & <span className="text-phonics-green">Easy</span>
             </h1>
             <p className="text-lg text-gray-600 mb-8 max-w-lg mx-auto md:mx-0">
-              Our playful phonics and grammar classes help children under 8 develop strong language skills through engaging activities.
+              Our ENGJOY PHONICS & GRAMMAR classes help children under 8 develop strong language skills through engaging activities.
             </p>
             <button 
               onClick={onGetStarted}

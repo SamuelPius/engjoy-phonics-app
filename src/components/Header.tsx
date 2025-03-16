@@ -20,7 +20,7 @@ const Header = () => {
           className="flex items-center gap-2 font-comic font-bold text-xl text-phonics-blue"
         >
           <Book className="w-8 h-8 text-phonics-blue animate-bounce-slight" />
-          <span>Phonics Playground</span>
+          <span>ENGJOY PHONICS & GRAMMAR</span>
         </Link>
         
         <div className="md:hidden">

@@ -19,7 +19,7 @@ const CTASection = ({ onEnrollNow }: CTASectionProps) => {
             Ready to Start Your Child's Learning Journey?
           </h2>
           <p className="text-lg mb-8 max-w-2xl mx-auto opacity-90">
-            Join our phonics and grammar classes today and watch your child's language skills blossom!
+            Join ENGJOY PHONICS & GRAMMAR classes today and watch your child's language skills blossom!
           </p>
           <button 
             onClick={onEnrollNow}
