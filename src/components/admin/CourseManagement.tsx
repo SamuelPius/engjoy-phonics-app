@@ -145,7 +145,7 @@ const CourseManagement = () => {
                   <TableCell>{course.students}</TableCell>
                   <TableCell>₹{course.price}</TableCell>
                   <TableCell>
-                    <Badge variant={course.status === 'Published' ? 'success' : 'outline'}>
+                    <Badge variant={course.status === 'Published' ? 'default' : 'outline'}>
                       {course.status}
                     </Badge>
                   </TableCell>

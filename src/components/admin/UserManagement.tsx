@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { 
   Table, 
@@ -141,7 +140,7 @@ const UserManagement = () => {
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={user.status === 'Active' ? 'success' : 'destructive'}>
+                    <Badge variant={user.status === 'Active' ? 'default' : 'destructive'}>
                       {user.status}
                     </Badge>
                   </TableCell>

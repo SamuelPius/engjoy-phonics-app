@@ -34,10 +34,27 @@ const Payment = () => {
     }, 2000);
   };
 
+  const handlePaymentFailure = (error: any) => {
+    toast({
+      title: "Payment failed",
+      description: "There was an issue processing your payment. Please try again.",
+      variant: "destructive"
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <PaymentGateway onPaymentSuccess={handlePaymentSuccess} />
+        <PaymentGateway 
+          amount={4999}
+          currency="INR"
+          name="ENGJOY PHONICS & GRAMMAR"
+          email="user@example.com"
+          phone="9876543210"
+          description="Course enrollment payment"
+          onSuccess={handlePaymentSuccess}
+          onFailure={handlePaymentFailure}
+        />
       </div>
       
       {/* Auth Modal */}
